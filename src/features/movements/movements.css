@@ -1,0 +1,198 @@
+/* ============================================================
+   Stock movements
+   ============================================================ */
+
+.movements-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: -4px;
+}
+
+.movements-search {
+  width: 100%;
+  max-width: 520px;
+}
+
+.movements-panel {
+  overflow: hidden;
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+.movement-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.movement-group + .movement-group .movement-group__label {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.movement-group__label {
+  padding: 10px 20px;
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.6px;
+}
+
+.movement-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.movement-row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+}
+
+.movement-row + .movement-row {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.movement-row__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+.movement-row__icon--receive {
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.movement-row__icon--issue {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.movement-row__icon--adjust {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.movement-row__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.movement-row__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.movement-row__product {
+  color: var(--md-sys-color-on-surface);
+}
+
+.movement-type {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.movement-type--receive {
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.movement-type--issue {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.movement-type--adjust {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.movement-row__detail {
+  color: var(--md-sys-color-on-surface-variant);
+  overflow-wrap: anywhere;
+}
+
+.movement-row__meta {
+  margin-top: 2px;
+}
+
+.movement-row__amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+}
+
+.movement-row__delta {
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.movement-row__delta.is-positive {
+  color: var(--md-sys-color-success);
+}
+
+.movement-row__delta.is-negative {
+  color: var(--md-sys-color-error);
+}
+
+.movement-row__stock {
+  white-space: nowrap;
+}
+
+@media (min-width: 600px) {
+  .movements-search {
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 599px) {
+  .movement-row {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 10px 12px;
+    padding: 14px 16px;
+  }
+
+  .movement-row__icon {
+    width: 36px;
+    height: 36px;
+    align-self: start;
+    margin-top: 2px;
+  }
+
+  .movement-row__amount {
+    grid-column: 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    text-align: left;
+  }
+
+  .movement-row__delta {
+    font-size: var(--md-sys-typescale-label-large-size);
+    line-height: var(--md-sys-typescale-label-large-line);
+  }
+
+  .movement-group__label {
+    padding: 8px 16px;
+  }
+}
