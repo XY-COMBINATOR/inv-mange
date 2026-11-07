@@ -112,3 +112,4 @@ Tests end-to-end CRUD, stock movements, validation, filters, deletion undo, supp
 npm run test:capture
 ```
 Generates full-resolution desktop and mobile viewport screenshots for both light and dark modes in `.preview/`.
+
