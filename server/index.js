@@ -7,8 +7,9 @@ import productsRouter from './routes/products.js';
 import suppliersRouter from './routes/suppliers.js';
 import movementsRouter from './routes/movements.js';
 import systemRouter from './routes/system.js';
+import chatRouter from './routes/chat.js';
 
-dotenv.config();
+dotenv.config({ path: ['.env.local', '.env'] });
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -22,6 +23,7 @@ app.use('/api/products', productsRouter);
 app.use('/api/suppliers', suppliersRouter);
 app.use('/api/movements', movementsRouter);
 app.use('/api/system', systemRouter);
+app.use('/api/chat', chatRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -41,4 +43,3 @@ async function start() {
 }
 
 start();
-

@@ -21,6 +21,32 @@
   border-right: 1px solid var(--md-sys-color-outline-variant);
 }
 
+.app-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(2px);
+  animation: aiFadeIn 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.app-rail.is-collapsed {
+  width: 56px;
+}
+
+.app-rail.is-collapsed .app-rail__label {
+  display: none;
+}
+
+.app-rail.is-collapsed .app-rail__indicator {
+  width: 40px;
+  height: 40px;
+}
+
+.app-rail.is-collapsed .app-rail__item {
+  padding: 4px 0;
+}
+
 .app-rail__brand {
   display: flex;
   align-items: center;
@@ -50,6 +76,14 @@
   padding: 4px 0;
   color: var(--md-sys-color-on-surface-variant);
   text-decoration: none;
+}
+
+.app-rail__action,
+.app-bottomnav__action {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
 }
 
 .app-rail__indicator {
@@ -178,15 +212,21 @@
   border-radius: var(--md-sys-shape-corner-full);
 }
 
+.app-topbar__menu {
+  display: none;
+}
+
 /* ---------- Main frame ---------- */
 .app-frame {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
+  min-width: 0;
 }
 
 .app-main {
   flex: 1;
+  min-width: 0;
   padding: 24px var(--app-gutter)
     calc(var(--app-bottomnav-height) + 24px + env(safe-area-inset-bottom));
 }
@@ -204,20 +244,28 @@
   z-index: 60;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   gap: 2px;
   min-height: var(--app-bottomnav-height);
   padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
   background: var(--md-sys-color-surface-container);
   border-top: 1px solid var(--md-sys-color-outline-variant);
+  scrollbar-width: none;
+}
+
+.app-bottomnav::-webkit-scrollbar {
+  display: none;
 }
 
 .app-bottomnav__item {
   display: flex;
-  flex: 1;
+  flex: 1 0 64px;
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  min-width: 64px;
   max-width: 112px;
   padding: 4px 0;
   color: var(--md-sys-color-on-surface-variant);
@@ -260,7 +308,7 @@
 .page-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: start;
   justify-content: space-between;
   gap: 16px;
 }
@@ -292,6 +340,26 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+}
+
+@media (max-width: 599px) {
+  .page-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .page-actions > .md-button {
+    flex: 1;
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+    padding: 0 12px;
+    height: 48px;
+  }
+
+  .page-actions > .md-button .md-icon {
+    margin-bottom: 4px;
+  }
 }
 
 .section {
@@ -400,6 +468,45 @@
   .app-brand__mark {
     display: none;
   }
+
+  .app-topbar__menu {
+    display: none;
+  }
+}
+
+@media (max-width: 839px) {
+  .app-rail {
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .app-rail.is-open {
+    display: flex;
+    transform: translateX(0);
+  }
+
+  .app-frame {
+    margin-left: 0;
+  }
+
+  .app-topbar__menu {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 400px) {
+  .app-topbar__inner {
+    gap: 8px;
+  }
+
+  .app-topbar__actions {
+    gap: 0;
+  }
+
+  .app-topbar__divider,
+  .db-status-pill {
+    display: none;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -439,4 +546,31 @@
   background-color: var(--md-sys-color-success-container);
   color: var(--md-sys-color-on-success-container);
   border-color: transparent;
+}
+
+/* ---------- AI Copilot Trigger Button ---------- */
+.ai-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-secondary-container) 100%);
+  color: var(--md-sys-color-on-primary-container);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.ai-trigger-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+.ai-trigger-btn:active {
+  transform: translateY(0);
 }

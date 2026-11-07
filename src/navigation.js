@@ -4,6 +4,7 @@ export const NAV_ITEMS = [
   { to: '/groups', label: 'Item groups', icon: 'category' },
   { to: '/movements', label: 'Stock', icon: 'swap_vert' },
   { to: '/suppliers', label: 'Suppliers', icon: 'local_shipping' },
+  { action: 'open-ai', label: 'AI Chat', icon: 'smart_toy' },
 ];
 
 export const SETTINGS_ITEM = {

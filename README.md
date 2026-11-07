@@ -60,12 +60,26 @@ docker compose up -d
 ```
 This spins up PostgreSQL on port `5432` and mounts `schema.sql` automatically.
 
-### 2. Configure Environment (`.env`)
-Check or update `.env`:
+### 2. Configure Environment (`.env.local`)
+Keep local configuration in the Git-ignored `.env.local` file:
 ```env
 PORT=3001
 DATABASE_URL=postgresql://postgres:postgrespassword@localhost:5432/invmage
 ```
+
+### AI chat testing with Pollinations
+
+Pollinations offers free testing credits on eligible accounts. Create an API
+key at [enter.pollinations.ai/keys](https://enter.pollinations.ai/keys), then
+add it to `.env.local` (keep the key private):
+```env
+POLLINATIONS_API_KEY=your_pollinations_api_key
+POLLINATIONS_MODEL=openai/gpt-5.4-nano
+```
+
+When `POLLINATIONS_API_KEY` is set, AI chat uses Pollinations before OpenAI or
+Gemini. The model setting is optional; the default is `openai/gpt-5.4-nano`.
+Restart the API server after changing `.env.local`.
 
 ### 3. Initialize Schema Directly in PostgreSQL
 To apply tables and indexes directly to your PostgreSQL instance:

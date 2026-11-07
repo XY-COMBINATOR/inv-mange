@@ -6,6 +6,7 @@ import arrowForward from '@material-symbols/svg-400/outlined/arrow_forward.svg?r
 import calendarToday from '@material-symbols/svg-400/outlined/calendar_today.svg?raw';
 import call from '@material-symbols/svg-400/outlined/call.svg?raw';
 import category from '@material-symbols/svg-400/outlined/category.svg?raw';
+import chat from '@material-symbols/svg-400/outlined/chat.svg?raw';
 import check from '@material-symbols/svg-400/outlined/check.svg?raw';
 import checkCircle from '@material-symbols/svg-400/outlined/check_circle.svg?raw';
 import close from '@material-symbols/svg-400/outlined/close.svg?raw';
@@ -33,7 +34,9 @@ import restartAlt from '@material-symbols/svg-400/outlined/restart_alt.svg?raw';
 import schedule from '@material-symbols/svg-400/outlined/schedule.svg?raw';
 import search from '@material-symbols/svg-400/outlined/search.svg?raw';
 import searchOff from '@material-symbols/svg-400/outlined/search_off.svg?raw';
+import send from '@material-symbols/svg-400/outlined/send.svg?raw';
 import settings from '@material-symbols/svg-400/outlined/settings.svg?raw';
+import smartToy from '@material-symbols/svg-400/outlined/smart_toy.svg?raw';
 import sort from '@material-symbols/svg-400/outlined/sort.svg?raw';
 import spaceDashboard from '@material-symbols/svg-400/outlined/space_dashboard.svg?raw';
 import swapVert from '@material-symbols/svg-400/outlined/swap_vert.svg?raw';
@@ -55,6 +58,7 @@ const OUTLINED = {
   calendar_today: calendarToday,
   call,
   category,
+  chat,
   check,
   check_circle: checkCircle,
   close,
@@ -83,7 +87,9 @@ const OUTLINED = {
   schedule,
   search,
   search_off: searchOff,
+  send,
   settings,
+  smart_toy: smartToy,
   sort,
   space_dashboard: spaceDashboard,
   swap_vert: swapVert,

@@ -6,7 +6,7 @@ import { Avatar } from '../ui/Avatar';
 import { useTheme } from '../../store/ThemeContext';
 import { useStore } from '../../store/StoreContext';
 
-export function TopAppBar() {
+export function TopAppBar({ onMenu }) {
   const { resolvedTheme, toggle } = useTheme();
   const { dbStatus } = useStore();
   const location = useLocation();
@@ -15,6 +15,15 @@ export function TopAppBar() {
   return (
     <header className="app-topbar">
       <div className="app-topbar__inner">
+        {onMenu && (
+          <IconButton
+            icon="menu"
+            label="Open navigation"
+            size="medium"
+            onClick={onMenu}
+            className="app-topbar__menu"
+          />
+        )}
         <div className="app-brand">
           <span className="app-brand__mark" aria-hidden="true">
             <Icon name="inventory_2" size={22} filled />

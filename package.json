@@ -5,7 +5,7 @@
   "type": "module",
   "description": "A clean Material 3 inventory management app",
   "scripts": {
-    "dev": "concurrently -k -n \"api,app\" -c \"cyan,magenta\" \"npm run server\" \"vite\"",
+    "dev": "concurrently -k -n \"api,app\" -c \"cyan,magenta\" \"node server/index.js\" \"vite\"",
     "dev:frontend": "vite",
     "server": "node server/index.js",
     "db:init": "node server/init-db.js",
@@ -16,8 +16,12 @@
     "test:capture": "node scripts/capture.mjs"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.113",
+    "@ai-sdk/openai": "^4.0.110",
+    "@ai-sdk/react": "^4.0.168",
     "@fontsource-variable/roboto": "^5.3.0",
     "@material-symbols/svg-400": "^0.48.3",
+    "ai": "^7.0.164",
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
@@ -25,7 +29,8 @@
     "pg-mem": "^3.0.14",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-router-dom": "^7.18.5"
+    "react-router-dom": "^7.18.5",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.2.1",

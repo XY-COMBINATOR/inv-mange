@@ -405,9 +405,10 @@ export async function initializeDatabase() {
     process.env.DATABASE_URL ||
     `postgresql://${process.env.PGUSER || 'postgres'}:${process.env.PGPASSWORD || 'postgres'}@${process.env.PGHOST || 'localhost'}:${process.env.PGPORT || 5432}/${process.env.PGDATABASE || 'invmage'}`;
 
+  let realPool = null;
   // Try real PostgreSQL connection first
   try {
-    const realPool = new Pool({
+    realPool = new Pool({
       connectionString,
       connectionTimeoutMillis: 3000,
     });
@@ -424,6 +425,9 @@ export async function initializeDatabase() {
       timestamp: res.rows[0].now,
     };
   } catch (err) {
+    if (realPool) {
+      realPool.end().catch(() => {});
+    }
     console.warn(`[PostgreSQL] Live connection failed (${err.message}). Using built-in PostgreSQL in-memory engine.`);
     const db = newDb();
     const adapter = db.adapters.createPg();

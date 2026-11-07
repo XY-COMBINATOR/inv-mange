@@ -145,7 +145,7 @@
   --app-topbar-height: 64px;
   --app-bottomnav-height: 80px;
   --app-gutter: 16px;
-  --app-max-width: 1360px;
+  --app-max-width: none;
 }
 
 @media (min-width: 600px) {
@@ -156,7 +156,7 @@
 
 @media (min-width: 1200px) {
   :root {
-    --app-gutter: 40px;
+    --app-gutter: 32px;
   }
 }
 
