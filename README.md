@@ -1,115 +1,101 @@
-# Invmage — Material 3 Inventory Management App
+# Invmage — Material 3 Inventory Management App with PostgreSQL
 
-A responsive, production-ready inventory management web application built strictly according to the **[Material Design 3 (M3)](https://m3.material.io/)** specifications, with full CRUD, stock movement tracking, supplier directory, and adaptive layouts.
-
----
-
-## 🚀 Features
-
-- **Full Catalog CRUD**:
-  - Add new products with auto-generated unique IDs, SKU validation, category selection, cost & price calculations, reorder thresholds, and warehouse location codes.
-  - Edit existing product specifications, pricing, and stock metadata.
-  - Delete products with confirmation dialog and one-click snackbar **Undo** restoration.
-- **Stock Movements & Audit Trail**:
-  - **Receive**: Add newly arrived stock with purchase order / supplier references.
-  - **Issue**: Issue inventory with safety checks preventing over-issuance past current stock levels.
-  - **Adjust**: Reconcile physical inventory counts against system records with automated delta calculations.
-  - Full movement history with chronological audit log, filters (All, Received, Issued, Adjusted), and date/user attribution.
-- **Supplier Directory**:
-  - Supplier cards with contact persons, email, phone, lead times, linked product count, and total inventory value.
-  - Full CRUD operations with cascade safeguards when removing suppliers.
-- **Interactive Dashboard**:
-  - KPI summary cards (Total Inventory Value, Total Units on Hand, Low Stock Alerts, Out of Stock).
-  - Quick action shortcuts (Add Product, Record Movement).
-  - Urgent Low-Stock visual alert board with one-click restock dialog.
-  - Category breakdown and stock health distribution visuals.
-- **Material 3 Design System**:
-  - **Color Roles**: Complete light and dark color schemes adhering to M3 tonal palettes (Primary, Secondary, Tertiary, Surface Containers, Outline, Error, and State Layers).
-  - **Adaptive Layout**: Side Navigation Rail for desktop and tablet screens; bottom Navigation Bar for mobile devices.
-  - **Component Hierarchy**: Fully decoupled, reusable UI primitives (Buttons, TextFields, SelectFields, SegmentedButtons, Dialogs, Cards, Chips, Menus, Snackbars, and SVGs for Material Symbols).
-  - **Typography & Motion**: Uses `@fontsource-variable/roboto` with M3 type scales (Display, Headline, Title, Body, Label) and standard M3 easing curves (`cubic-bezier(0.2, 0, 0, 1)`).
-- **Offline Persistence**:
-  - LocalStorage persistence (`invmage:data:v1`) pre-seeded with catalog items, movement history, and suppliers.
-  - Reset to demo data or export JSON backup from the Settings view.
+A responsive, production-grade inventory management web application built strictly according to the **[Material Design 3 (M3)](https://m3.material.io/)** specifications, powered by a **PostgreSQL** storage engine and featuring complete **Item Group Management**, catalog CRUD, stock movement tracking, and supplier directory.
 
 ---
 
-## 🛠️ Project Structure
+## 🚀 Key Features
 
-```text
-src/
-├── components/
-│   ├── layout/
-│   │   ├── AppShell.jsx        # Responsive container with skip-to-content
-│   │   ├── TopAppBar.jsx       # Dynamic title, theme toggle & notifications
-│   │   ├── NavigationRail.jsx  # Desktop M3 navigation rail
-│   │   ├── BottomNav.jsx       # Mobile 5-tab navigation bar
-│   │   └── layout.css
-│   └── ui/
-│       ├── Button.jsx          # Filled, tonal, outlined, text, danger variants
-│       ├── IconButton.jsx      # Standard & tonal icon buttons with tooltips
-│       ├── TextField.jsx       # Outlined floating label input with error states
-│       ├── SelectField.jsx     # Outlined floating label select
-│       ├── SegmentedButton.jsx # M3 single-select segmented buttons
-│       ├── Dialog.jsx          # Focus-trapped modal with accessible dialog ARIA
-│       ├── Card.jsx            # Outlined & elevated card containers
-│       ├── Chip.jsx            # Filter & assist chips
-│       ├── StockBadge.jsx      # In-stock, Low-stock, Out-of-stock indicators
-│       ├── Menu.jsx            # Contextual dropdown menu with keyboard support
-│       ├── Snackbar.jsx        # Floating snackbar with auto-dismiss & action
-│       ├── SearchField.jsx     # Outlined search bar with clear button
-│       ├── Avatar.jsx          # Tonal initials avatar
-│       ├── EmptyState.jsx      # M3 empty states with iconography
-│       ├── Icon.jsx            # Offline Material Symbols SVG renderer
-│       └── ui.css
-├── features/
-│   ├── dashboard/              # Dashboard overview, KPIs, and low-stock monitor
-│   ├── inventory/              # Product catalog table, filters, Add/Edit/Delete dialogs
-│   ├── movements/              # Chronological movement audit log & filtering
-│   ├── suppliers/              # Supplier directory cards & management dialogs
-│   └── settings/               # Light/Dark/System theme selector, data reset & export
-├── store/
-│   ├── StoreContext.jsx        # Core state reducer & action creators
-│   ├── ThemeContext.jsx        # Theme provider (light / dark / system)
-│   └── ToastContext.jsx        # Snackbar toast dispatcher
-├── styles/
-│   ├── tokens.css              # Material 3 design tokens (colors, elevation, shape)
-│   ├── base.css                # Typography & resets
-│   └── forms.css               # Form grids & shared input styles
-└── utils/
-    ├── format.js               # Currency (INR ₹) & date formatting helpers
-    └── stock.js                # Stock thresholds and status helpers
+### 🗂️ Item Group Management
+- **Catalog Classification**:
+  - Organize products into dedicated **Item Groups** (e.g., Electronics, Accessories, Office Supplies, Components, Packaging).
+  - Each item group includes a display name, unique prefix code (e.g., `ELEC`, `ACCS`), description, and Material 3 accent color theme.
+- **Aggregated Analytics**:
+  - Live calculations of total products classified, total stock units on hand, and aggregated retail inventory value per group.
+- **Full CRUD & Safety Safeguards**:
+  - Create new groups with auto-generated code suggestions and custom color swatch picker.
+  - Edit group details with real-time propagation across linked products.
+  - Delete safeguard warnings that calculate and inform how many products are linked before deletion.
+- **Direct Filtering**:
+  - One-click **"View items"** deep-links directly into the inventory catalog pre-filtered by that group.
+
+### 🐘 PostgreSQL Data Storage & API Architecture
+- **PostgreSQL Database Storage**:
+  - Dedicated PostgreSQL database backend storing `item_groups`, `suppliers`, `products`, and `movements`.
+  - Full relational schema (`schema.sql`) with primary keys, unique constraints, foreign keys with `ON DELETE SET NULL` / `CASCADE`, and indexes.
+  - Standard PostgreSQL connection pool using `pg.Pool` via configurable `DATABASE_URL` or standard PG parameters (`PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`).
+  - Express.js REST API providing `/api/item-groups`, `/api/products`, `/api/suppliers`, `/api/movements`, and `/api/system`.
+  - **Zero-Friction Fallback**: Includes a built-in in-memory PostgreSQL engine so the application boots instantly out of the box and seamlessly switches to live PostgreSQL when configured.
+  - Live database connection status pill in the Top App Bar and detailed configuration controls in Settings.
+
+### 📦 Full Catalog CRUD
+- Add new products with auto-generated unique IDs, SKU validation, Item Group selection, cost & price calculations, reorder thresholds, and warehouse location codes.
+- Edit existing product specifications, pricing, and stock metadata.
+- Delete products with confirmation dialog and one-click snackbar **Undo** restoration.
+
+### 🔄 Stock Movements & Audit Trail
+- **Receive**: Add newly arrived stock with purchase order / supplier references.
+- **Issue**: Issue inventory with safety checks preventing over-issuance past current stock levels.
+- **Adjust**: Reconcile physical inventory counts against system records with automated delta calculations.
+- Full movement history with chronological audit log, filters (All, Received, Issued, Adjusted), and date/user attribution.
+
+### 🚚 Supplier Directory
+- Supplier cards with contact persons, email, phone, lead times, linked product count, and total inventory value.
+- Full CRUD operations with cascade safeguards when removing suppliers.
+
+### 📊 Interactive Material 3 Dashboard
+- KPI summary cards (Total Inventory Value, Total Units on Hand, Low Stock Alerts, Out of Stock).
+- Quick action shortcuts (Add Product, Record Movement, Manage Item Groups).
+- Urgent Low-Stock visual alert board with one-click restock dialog.
+- Item group value distribution meter with direct links to manage groups.
+
+---
+
+## 🛠️ PostgreSQL Setup & Database Commands
+
+### 1. Launch PostgreSQL with Docker (Recommended)
+You can start a PostgreSQL 16 instance with one command:
+```bash
+docker compose up -d
+```
+This spins up PostgreSQL on port `5432` and mounts `schema.sql` automatically.
+
+### 2. Configure Environment (`.env`)
+Check or update `.env`:
+```env
+PORT=3001
+DATABASE_URL=postgresql://postgres:postgrespassword@localhost:5432/invmage
+```
+
+### 3. Initialize Schema Directly in PostgreSQL
+To apply tables and indexes directly to your PostgreSQL instance:
+```bash
+npm run db:init
 ```
 
 ---
 
-## 🚀 Getting Started
+## 💻 Getting Started
 
 ### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-### 2. Start Development Server
+### 2. Start Both Backend Server & Frontend (One Command)
 ```bash
 npm run dev
 ```
-Navigate to `http://localhost:5173`.
+- Frontend UI runs on: `http://localhost:5173`
+- PostgreSQL API runs on: `http://localhost:3001/api`
 
-### 3. Build for Production
+### 3. Run Verification Tests
+```bash
+npm run test:postgres
+npm run test:flow
+```
+
+### 4. Build for Production
 ```bash
 npm run build
 ```
-
-### 4. Run Automated Flow Tests
-```bash
-npm run test:flow
-```
-Tests end-to-end CRUD, stock movements, validation, filters, deletion undo, supplier management, and theme transitions using Puppeteer.
-
-### 5. Generate Visual Screenshots
-```bash
-npm run test:capture
-```
-Generates full-resolution desktop and mobile viewport screenshots for both light and dark modes in `.preview/`.
-

@@ -6,6 +6,7 @@ import { ToastProvider } from './store/ToastContext';
 import { AppShell } from './components/layout/AppShell';
 import { DashboardView } from './features/dashboard/DashboardView';
 import { InventoryView } from './features/inventory/InventoryView';
+import { ItemGroupsView } from './features/item-groups/ItemGroupsView';
 import { MovementsView } from './features/movements/MovementsView';
 import { SuppliersView } from './features/suppliers/SuppliersView';
 import { SettingsView } from './features/settings/SettingsView';
@@ -32,6 +33,7 @@ export function App() {
             <Routes>
               <Route path="/" element={<DashboardView />} />
               <Route path="/inventory" element={<InventoryView />} />
+              <Route path="/groups" element={<ItemGroupsView />} />
               <Route path="/movements" element={<MovementsView />} />
               <Route path="/suppliers" element={<SuppliersView />} />
               <Route path="/settings" element={<SettingsView />} />

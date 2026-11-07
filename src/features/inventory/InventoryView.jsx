@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Chip } from '../../components/ui/Chip';
@@ -56,10 +57,13 @@ function FilterSelect({ label, icon, value, onChange, options }) {
 }
 
 export function InventoryView() {
-  const { products, suppliers } = useStore();
+  const { products, suppliers, itemGroups = [] } = useStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialGroup = searchParams.get('group') || 'all';
+
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('all');
-  const [category, setCategory] = useState('all');
+  const [category, setCategory] = useState(initialGroup);
   const [sort, setSort] = useState('name-asc');
   const [addOpen, setAddOpen] = useState(false);
   const [editing, setEditing] = useState(null);
@@ -67,15 +71,34 @@ export function InventoryView() {
   const [stockProductId, setStockProductId] = useState('');
   const [stockOpen, setStockOpen] = useState(false);
 
+  useEffect(() => {
+    const g = searchParams.get('group');
+    if (g) setCategory(g);
+  }, [searchParams]);
+
+  const groupsById = useMemo(
+    () => new Map(itemGroups.map((g) => [g.id, g])),
+    [itemGroups],
+  );
+
+  const groupsByName = useMemo(
+    () => new Map(itemGroups.map((g) => [g.name.toLowerCase(), g])),
+    [itemGroups],
+  );
+
   const suppliersById = useMemo(
     () => new Map(suppliers.map((supplier) => [supplier.id, supplier])),
     [suppliers],
   );
 
-  const categories = useMemo(
-    () => [...new Set(products.map((product) => product.category))].sort(),
-    [products],
-  );
+  const categories = useMemo(() => {
+    const names = new Set();
+    itemGroups.forEach((g) => names.add(g.name));
+    products.forEach((p) => {
+      if (p.category) names.add(p.category);
+    });
+    return [...names].sort();
+  }, [itemGroups, products]);
 
   const statusCounts = useMemo(() => {
     const counts = { all: products.length, in: 0, low: 0, out: 0 };
@@ -271,6 +294,9 @@ export function InventoryView() {
                 <tbody>
                   {filtered.map((product) => {
                     const supplier = suppliersById.get(product.supplierId);
+                    const group =
+                      groupsById.get(product.groupId) ||
+                      groupsByName.get(product.category?.toLowerCase());
                     return (
                       <tr key={product.id}>
                         <td className="cell-product">
@@ -285,7 +311,21 @@ export function InventoryView() {
                           </div>
                         </td>
                         <td className="cell-category">
-                          <span className="category-tag">{product.category}</span>
+                          <span className="category-tag">
+                            {group && (
+                              <span
+                                style={{
+                                  display: 'inline-block',
+                                  width: 8,
+                                  height: 8,
+                                  borderRadius: '50%',
+                                  backgroundColor: group.color,
+                                  marginRight: 6,
+                                }}
+                              />
+                            )}
+                            {product.category}
+                          </span>
                         </td>
                         <td>
                           <div className="stock-cell">

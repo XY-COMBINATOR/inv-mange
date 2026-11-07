@@ -4,9 +4,11 @@ import { Icon } from '../ui/Icon';
 import { IconButton } from '../ui/IconButton';
 import { Avatar } from '../ui/Avatar';
 import { useTheme } from '../../store/ThemeContext';
+import { useStore } from '../../store/StoreContext';
 
 export function TopAppBar() {
   const { resolvedTheme, toggle } = useTheme();
+  const { dbStatus } = useStore();
   const location = useLocation();
   const title = ROUTE_TITLES[location.pathname] ?? 'Invmage';
 
@@ -26,6 +28,14 @@ export function TopAppBar() {
         </div>
 
         <div className="app-topbar__actions">
+          <span
+            className={`db-status-pill ${dbStatus?.connected ? 'is-connected' : ''}`}
+            title={dbStatus?.message || dbStatus?.type}
+          >
+            <Icon name="database" size={14} />
+            <span>{dbStatus?.connected ? 'PostgreSQL' : 'PG Ready'}</span>
+          </span>
+
           <IconButton
             icon={resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
             label={

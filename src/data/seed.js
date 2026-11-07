@@ -3,13 +3,45 @@ const hoursAgo = (hours) =>
 
 export const LOCATIONS = ['A-01', 'A-02', 'B-11', 'C-04', 'D-01', 'E-01'];
 
-export const CATEGORIES = [
-  'Electronics',
-  'Accessories',
-  'Office',
-  'Components',
-  'Packaging',
+export const ITEM_GROUPS = [
+  {
+    id: 'grp-electronics',
+    name: 'Electronics',
+    code: 'ELEC',
+    description: 'Audio devices, smart peripherals, keyboards, and battery banks.',
+    color: '#3b82f6',
+  },
+  {
+    id: 'grp-accessories',
+    name: 'Accessories',
+    code: 'ACCS',
+    description: 'Cables, ergonomic stands, protective sleeves, and adapters.',
+    color: '#8b5cf6',
+  },
+  {
+    id: 'grp-office',
+    name: 'Office',
+    code: 'OFFC',
+    description: 'Lamps, notebooks, organizers, and everyday desk supplies.',
+    color: '#10b981',
+  },
+  {
+    id: 'grp-components',
+    name: 'Components',
+    code: 'CMPN',
+    description: 'Microcontrollers, sensors, ICs, display modules, and headers.',
+    color: '#f59e0b',
+  },
+  {
+    id: 'grp-packaging',
+    name: 'Packaging',
+    code: 'PCKG',
+    description: 'Cardboard mailers, honeycomb cushioning, sealing tape, and labels.',
+    color: '#ec4899',
+  },
 ];
+
+export const CATEGORIES = ITEM_GROUPS.map((g) => g.name);
 
 export const MOVEMENT_REASONS = {
   receive: ['Purchase order', 'Customer return', 'Transfer in', 'Stock correction'],
@@ -467,5 +499,19 @@ export function createSeedState() {
     },
   ];
 
-  return { schemaVersion: 1, products, suppliers, movements };
+  const enrichedProducts = products.map((p) => {
+    const matchedGroup = ITEM_GROUPS.find((g) => g.name.toLowerCase() === p.category?.toLowerCase());
+    return {
+      ...p,
+      groupId: matchedGroup ? matchedGroup.id : null,
+    };
+  });
+
+  return {
+    schemaVersion: 2,
+    itemGroups: ITEM_GROUPS,
+    products: enrichedProducts,
+    suppliers,
+    movements,
+  };
 }

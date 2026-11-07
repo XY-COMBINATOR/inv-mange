@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Icon } from '../../components/ui/Icon';
@@ -28,7 +28,8 @@ function greeting() {
 }
 
 export function DashboardView() {
-  const { products, movements, suppliers } = useStore();
+  const { products, movements, suppliers, itemGroups = [] } = useStore();
+  const navigate = useNavigate();
   const [addOpen, setAddOpen] = useState(false);
   const [stockDialog, setStockDialog] = useState({ open: false, productId: '' });
 
@@ -134,6 +135,13 @@ export function DashboardView() {
           </p>
         </div>
         <div className="page-actions">
+          <Button
+            variant="outlined"
+            icon="category"
+            onClick={() => navigate('/groups')}
+          >
+            Item groups
+          </Button>
           <Button
             variant="tonal"
             icon="swap_vert"
@@ -291,11 +299,19 @@ export function DashboardView() {
           <Card variant="outlined" className="dash-card">
             <div className="dash-card__header">
               <div>
-                <h2 className="md-title-large">Value by category</h2>
+                <h2 className="md-title-large">Value by item group</h2>
                 <p className="md-body-small text-muted">
                   Retail value at current stock
                 </p>
               </div>
+              <Button
+                variant="text"
+                size="small"
+                onClick={() => navigate('/groups')}
+                icon="arrow_forward"
+              >
+                Manage
+              </Button>
             </div>
             {categories.length === 0 ? (
               <p className="md-body-medium text-muted">No inventory yet.</p>
